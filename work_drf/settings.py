@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'work_drf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'course_django',
+        'NAME': 'work',
         'USER': 'postgres',
         'PASSWORD': 'sixteen',
         'HOST': 'localhost',
@@ -117,7 +117,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-MEDIA_URL = '/media'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
