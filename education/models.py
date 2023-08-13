@@ -1,6 +1,9 @@
 from django.db import models
 
-NULLABLE = {'blank': True, 'null': True}
+NULLABLE = {
+    'blank': True,
+    'null': True,
+}
 
 
 class Well(models.Model):
