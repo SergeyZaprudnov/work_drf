@@ -1,11 +1,11 @@
 from rest_framework.serializers import ModelSerializer
 
-from education.models import Well, Lesson
+from education.models import Course, Lesson
 
 
-class WellSerializer(ModelSerializer):
+class CourseSerializer(ModelSerializer):
     class Meta:
-        model = Well
+        model = Course
         fields = '__all__'
 
 
