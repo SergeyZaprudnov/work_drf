@@ -58,4 +58,4 @@ class Payment(models.Model):
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
         ordering = ('-date_paid',)
-       
+1
