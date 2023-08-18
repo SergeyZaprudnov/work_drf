@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from users.models import User
@@ -12,6 +13,7 @@ class Course(models.Model):
     title = models.CharField(max_length=50, verbose_name='Название')
     preview = models.ImageField(upload_to='', **NULLABLE, verbose_name='Изображение')
     description = models.CharField(max_length=150, verbose_name='Описание')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='owner', **NULLABLE)
 
     class Meta:
         verbose_name = 'Курс'
@@ -31,6 +33,7 @@ class Lesson(models.Model):
         verbose_name='Ссылка на видео'
     )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='course', related_name='lessons')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='owner', **NULLABLE)
 
     class Meta:
         verbose_name = 'Урок'
@@ -58,4 +61,3 @@ class Payment(models.Model):
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
         ordering = ('-date_paid',)
-1
