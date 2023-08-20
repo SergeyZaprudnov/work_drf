@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/doc/', include('django.contrib.admindocs.urls')),
     path('admin/', admin.site.urls),
     path('', include('education.urls', namespace='education')),
-    path('user/', include('users.urls', namespace='user')),
+    path('users/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
