@@ -1,6 +1,11 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+NULLABLE = {
+    'null': True,
+    'blank': True,
+}
+
 
 class UserRoles(models.TextChoices):
     MEMBER = 'member'
@@ -11,9 +16,9 @@ class User(AbstractUser):
     username = None
 
     email = models.EmailField(max_length=100, verbose_name='Электронная почта', unique=True)
-    city = models.CharField(max_length=150, verbose_name='Город')
-    phone = models.CharField(max_length=50, verbose_name='Телефон')
-    avatar = models.ImageField(upload_to='avatar.png', verbose_name='Аватар')
+    city = models.CharField(max_length=150, verbose_name='Город', **NULLABLE)
+    phone = models.CharField(max_length=50, verbose_name='Телефон', **NULLABLE)
+    avatar = models.ImageField(upload_to='avatar.png', verbose_name='Аватар', **NULLABLE)
 
     role = models.CharField(max_length=9, choices=UserRoles.choices, default=UserRoles.MEMBER)
 
