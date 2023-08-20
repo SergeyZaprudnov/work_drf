@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import UpdateAPIView, ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import UpdateAPIView
 from rest_framework.response import Response
+from rest_framework.viewsets import ViewSet
 
 from users.models import User
-from users.serializers import UserSerializer, UserLimitedSerializer
+from users.serializers import UserSerializer
 
 
 class UserUpdateAPIView(UpdateAPIView):
@@ -12,16 +12,12 @@ class UserUpdateAPIView(UpdateAPIView):
     serializer_class = UserSerializer
 
 
-class UserListAPIView(ListAPIView):
+class UserViewSet(ViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
 
     def retrieve(self, request, pk=None):
         queryset = User.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        if user == request.user:
-            serializer = UserSerializer(user)
-        else:
-            serializer = UserLimitedSerializer(user)
+        serializer = UserSerializer(user)
         return Response(serializer.data)
