@@ -3,21 +3,15 @@ from rest_framework.permissions import BasePermission
 from users.models import UserRoles
 
 
-class CoursePermission(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.user.groups.filter(name='Модераторы').exists():
-            return True
-        elif request.method in ['GET', 'PUT', 'PATCH'] and obj.owner == request.user:
-            return True
-        else:
-            return False
+class IsModerator(BasePermission):
+    message = "You are not moderator"
+
+    def has_permission(self, request, view):
+        return request.user.role == UserRoles.MODERATOR
 
 
-class LessonPermission(BasePermission):
+class IsOwner(BasePermission):
+    message = "You are not an owner of this entity"
+
     def has_object_permission(self, request, view, obj):
-        if request.user.groups.filter(name='Модераторы').exists():
-            return True
-        elif request.method in ['GET', 'PUT', 'PATCH'] and obj.owner == request.user:
-            return True
-        else:
-            return False
+        return request.user == obj.owner
