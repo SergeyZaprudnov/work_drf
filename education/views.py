@@ -4,7 +4,8 @@ from rest_framework.generics import CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 
-from education.models import Course, Lesson, Payment
+from education.models import Course, Lesson, Payment, Subscription
+from education.paginators import VehiclePaginator
 from education.permissions import IsModerator, IsOwner
 from education.serializers import CourseSerializer, LessonSerializer, PaymentSerializer
 from users.models import UserRoles
@@ -14,6 +15,7 @@ class CourseViewSet(ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = VehiclePaginator
 
     def get_permissions(self):
         if self.action == 'list':
@@ -87,3 +89,13 @@ class PaymentListAPIView(ListAPIView):
     ordering_fields = ('date_paid',)
     filterset_fields = ('course', 'lesson', 'type',)
     permission_classes = [IsAuthenticated]
+
+
+class SubscriptionCreateAPIView(CreateAPIView):
+    serializer_class = CourseSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class SubscriptionDestroyAPIView(DestroyAPIView):
+    queryset = Subscription.objects.all()
+    permission_classes = [AllowAny]
