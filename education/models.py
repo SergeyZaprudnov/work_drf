@@ -59,3 +59,16 @@ class Payment(models.Model):
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
         ordering = ('-date_paid',)
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+    is_subscription = models.BooleanField(default=False, verbose_name='Подписка')
+
+    def __str__(self):
+        return f'{self.user.name} - {self.course.title}'
+
+    class Meta:
+        verbose_name = 'Подписка на курс'
+        verbose_name_plural = 'Подписка на курсы'
