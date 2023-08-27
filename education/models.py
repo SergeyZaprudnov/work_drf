@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from users.models import User
@@ -9,9 +10,11 @@ NULLABLE = {
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=50, verbose_name='Название')
-    preview = models.ImageField(upload_to='', **NULLABLE, verbose_name='Изображение')
-    description = models.CharField(max_length=150, verbose_name='Описание')
+    title = models.CharField(max_length=200, verbose_name='Название курса')
+    description = models.TextField(verbose_name='Описание курса')
+    content = models.TextField(verbose_name='Содержимое курса', **NULLABLE)
+    preview = models.ImageField(upload_to='course_previews/', verbose_name='Превью', **NULLABLE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 
     class Meta:
         verbose_name = 'Курс'
@@ -23,14 +26,12 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    title = models.CharField(max_length=100, verbose_name='Название')
-    preview = models.ImageField(upload_to='', **NULLABLE, verbose_name='Изображение')
-    description = models.CharField(max_length=150, verbose_name='Описание')
-    url = models.URLField(
-        default='https://my.sky.pro/student-cabinet/stream-lesson/87835/theory/5',
-        verbose_name='Ссылка на видео'
-    )
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='course', related_name='lessons')
+    title = models.CharField(max_length=200, verbose_name='Название урока')
+    description = models.TextField(verbose_name='Описание урока')
+    content = models.TextField(verbose_name='Содержимое урока', **NULLABLE)
+    preview_image = models.ImageField(upload_to='lesson_previews/', verbose_name='Превью', **NULLABLE)
+    course = models.ForeignKey(Course, default=1, on_delete=models.CASCADE, related_name='lessons', verbose_name='Курс')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Владелец', **NULLABLE)
 
     class Meta:
         verbose_name = 'Урок'
@@ -58,4 +59,16 @@ class Payment(models.Model):
         verbose_name = 'payment'
         verbose_name_plural = 'payments'
         ordering = ('-date_paid',)
-1
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='пользователь')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='Курс')
+    is_subscription = models.BooleanField(default=False, verbose_name='Подписка')
+
+    def __str__(self):
+        return f'{self.user.name} - {self.course.title}'
+
+    class Meta:
+        verbose_name = 'Подписка на курс'
+        verbose_name_plural = 'Подписка на курсы'
