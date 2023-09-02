@@ -3,10 +3,12 @@ from rest_framework.fields import IntegerField
 from rest_framework.serializers import ModelSerializer
 
 from education.models import Course, Lesson, Payment, Subscription
+from validators import validate_content
 
 
 class LessonSerializer(ModelSerializer):
     content = serializers.CharField(validators=[validate_content])
+
     class Meta:
         model = Lesson
         fields = '__all__'
