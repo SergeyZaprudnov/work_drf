@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR / my_code
+WORKDIR /my_code
 
 COPY ./requirements.txt /my_code/
 
